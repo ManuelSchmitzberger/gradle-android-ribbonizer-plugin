@@ -42,7 +42,8 @@ ribbonizer {
 
     builder { ApplicationVariant variant, File iconFile ->
         if (variant.flavorName == "local") {
-            return grayRibbonFilter(variant, iconFile)
+            return customColorRibbonNameFilter(variant, iconFile, "TEST", "#0000FF")
+            //return greenRibbonFilter(variant, iconFile)
         } else if (variant.buildType.name == "debug") {
             return customColorRibbonFilter(variant, iconFile, "#0000FF")
         } else {
@@ -55,5 +56,5 @@ ribbonizer {
 
 dependencies {
     compile 'com.jakewharton:butterknife:6.1.0'
-    compile 'com.android.support:appcompat-v7:25.0.0'
+    compile 'com.android.support:appcompat-v7:25.1.0'
 }

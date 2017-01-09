@@ -1,12 +1,7 @@
 package com.github.gfx.ribbonizer.plugin;
 
 import com.android.build.gradle.api.ApplicationVariant;
-import com.github.gfx.ribbonizer.CustomColorRibbonBuilder;
-import com.github.gfx.ribbonizer.FilterBuilder;
-import com.github.gfx.ribbonizer.GrayScaleBuilder;
-import com.github.gfx.ribbonizer.GrayRibbonBuilder;
-import com.github.gfx.ribbonizer.GreenRibbonBuilder;
-import com.github.gfx.ribbonizer.YellowRibbonBuilder;
+import com.github.gfx.ribbonizer.*;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -105,5 +100,9 @@ class RibbonizerExtension {
 
     public Consumer<BufferedImage> customColorRibbonFilter(ApplicationVariant variant, File iconFile, String nm) {
         return new CustomColorRibbonBuilder(nm).apply(variant, iconFile);
+    }
+
+    public Consumer<BufferedImage> customColorRibbonNameFilter(ApplicationVariant variant, File iconFile, String name, String nm) {
+        return new CustomColorRibbonNameBuilder(name, nm).apply(variant, iconFile);
     }
 }
