@@ -1,3 +1,7 @@
+apply plugin: 'maven'
+apply plugin: 'maven-publish'
+apply plugin: "com.jfrog.artifactory"
+
 final REPOSITORY_URL = 'https://github.com/gfx/gradle-android-ribbonizer-plugin'
 
 final GROUP_ID = 'com.github.gfx.ribbonizer'
@@ -7,8 +11,17 @@ final VERSION = '0.7.0'
 buildscript {
     repositories {
         jcenter()
+
+        maven {
+            url ARTIFACTORY_URL + "/plugins-release"
+            credentials {
+                username = ARTIFACTORY_USER
+                password = ARTIFACTORY_PWD
+            }
+        }
     }
     dependencies {
+        classpath 'org.jfrog.buildinfo:build-info-extractor-gradle:4.0.0'
         classpath 'com.bmuschko:gradle-nexus-plugin:2.3'
     }
 }
@@ -75,31 +88,30 @@ extraArchive {
     javadoc = true
 }
 
-modifyPom {
-    project {
-        name 'Ribbonizer plugin for Android'
-        description 'Adds ribbons to launcher icons for Android applications'
-        url REPOSITORY_URL
-        inceptionYear '2015'
-
-        scm {
-            url REPOSITORY_URL
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            groupId GROUP_ID
+            artifactId ARTIFACT_ID
+            version VERSION
+            // from components.java
+            artifact("$buildDir/libs/plugin.jar")
         }
+    }
+}
 
-        licenses {
-            license {
-                name 'The Apache Software License, Version 2.0'
-                url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                distribution 'repo'
-            }
+artifactory {
+    contextUrl = ARTIFACTORY_URL
+    //The base Artifactory URL if not overridden by the publisher/resolver
+    publish {
+        repository {
+            repoKey = 'libs-release-local'
+            username = ARTIFACTORY_USER
+            password = ARTIFACTORY_PWD
+            maven = true
         }
-
-        developers {
-            developer {
-                id 'ms'
-                name 'Manuel Schmitzberger'
-                email 'manuel.schmitzberger@live.com'
-            }
+        defaults {
+            publications ('mavenJava')
         }
     }
 }
