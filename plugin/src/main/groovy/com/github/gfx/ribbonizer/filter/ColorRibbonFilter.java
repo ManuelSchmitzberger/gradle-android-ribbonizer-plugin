@@ -56,7 +56,7 @@ public class ColorRibbonFilter implements Consumer<BufferedImage> {
 
         g.setTransform(AffineTransform.getRotateInstance(Math.toRadians(-45)));
 
-        int y = height / 4;
+        int y = height / 3;
 
         // calculate the rectangle where the label is rendered
         FontRenderContext frc = new FontRenderContext(g.getTransform(), true, true);
@@ -77,7 +77,7 @@ public class ColorRibbonFilter implements Consumer<BufferedImage> {
 
         drawString(g, label,
                 (int) -labelBounds.getWidth() / 2,
-                y + fm.getAscent());
+                y + fm.getAscent() + (int) (labelBounds.getHeight() / 2 - fm.getAscent() / 2));
 
         g.dispose();
     }
